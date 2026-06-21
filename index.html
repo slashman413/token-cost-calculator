@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Token 計數 & API 成本計算機 | Token & API Cost Calculator</title>
+<meta name="description" content="免費線上 Token 計數與 LLM API 成本計算機：貼上文字即時估算 token 數，比較 GPT-4o、Claude、Gemini、DeepSeek 等模型的輸入/輸出費用。Free token counter & LLM API cost calculator.">
+<meta property="og:title" content="Token & API Cost Calculator | Token 成本計算機">
+<meta property="og:description" content="貼上文字即時算 token、比較各大 LLM API 費用。GPT · Claude · Gemini · DeepSeek.">
+<!-- GSC: replace content with the verification code from Search Console, then it verifies -->
+<meta name="google-site-verification" content="REPLACE_WITH_GSC_CODE">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115666613619890" crossorigin="anonymous"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MY95FHB8JG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date()); gtag('config', 'G-MY95FHB8JG');
+</script>
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0a0f;color:#e8e8f0;min-height:100vh;padding:32px 16px 64px;line-height:1.5}
+  .wrap{max-width:760px;margin:0 auto}
+  .topbar{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+  .topbar h1{font-size:20px;font-weight:700;flex:1}
+  .lang-btn{padding:6px 12px;border-radius:99px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#c7c7f0;font-size:12px;font-weight:700;cursor:pointer}
+  .lang-btn:hover{background:rgba(99,102,241,.25)}
+  .sub{color:#7878a0;font-size:13px;margin-bottom:18px}
+  .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px;margin-bottom:14px}
+  label{display:block;font-size:12px;color:#9a9ac0;margin-bottom:6px;font-weight:600}
+  textarea{width:100%;min-height:120px;background:#12121a;border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#e8e8f0;padding:12px;font-size:14px;resize:vertical}
+  .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+  .row > div{flex:1;min-width:140px}
+  input[type=number]{width:100%;background:#12121a;border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#e8e8f0;padding:10px;font-size:14px}
+  .stat{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px}
+  .stat .b{background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.25);border-radius:10px;padding:10px 14px}
+  .stat .n{font-size:22px;font-weight:800;color:#a5b4fc}
+  .stat .l{font-size:11px;color:#8888b0}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px}
+  th,td{text-align:right;padding:9px 8px;border-bottom:1px solid rgba(255,255,255,.06)}
+  th:first-child,td:first-child{text-align:left}
+  th{color:#8888b0;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+  tr.best td{background:rgba(16,185,129,.10)}
+  .badge{display:inline-block;font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:99px;background:rgba(16,185,129,.2);color:#10b981;margin-left:6px}
+  .ad-slot{width:100%;min-height:90px;background:rgba(255,255,255,.02);border:1px dashed rgba(255,255,255,.07);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#303048;margin:16px 0}
+  .aff{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;text-decoration:none;color:inherit;margin-bottom:8px}
+  .aff:hover{border-color:rgba(255,255,255,.18)}
+  .aff .i{font-size:22px}
+  .aff .t{flex:1}.aff .t b{font-size:13.5px}.aff .t span{font-size:11px;color:#7878a0;display:block}
+  .note{font-size:11px;color:#50506e;margin-top:8px;line-height:1.6}
+  .footer{margin-top:22px;text-align:center;font-size:11px;color:#444466;line-height:1.8}
+  .footer a{color:#6868a0;text-decoration:none}.footer a:hover{text-decoration:underline}
+  .seclabel{font-size:11px;font-weight:700;letter-spacing:1px;color:#44446a;text-transform:uppercase;margin:18px 0 8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <span style="font-size:24px">🧮</span>
+    <h1 data-i18n="title">Token 計數 & API 成本計算機</h1>
+    <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+  </div>
+  <div class="sub" data-i18n="sub">貼上文字即時估算 token 數，並比較各大 LLM API 的輸入/輸出費用。</div>
+
+  <div class="card">
+    <label data-i18n="inlabel">輸入文字（估算 token 數）</label>
+    <textarea id="text" placeholder="Paste your prompt / text here..."></textarea>
+    <div class="stat">
+      <div class="b"><div class="n" id="tokCount">0</div><div class="l" data-i18n="tokens">輸入 tokens</div></div>
+      <div class="b"><div class="n" id="charCount">0</div><div class="l" data-i18n="chars">字元數</div></div>
+    </div>
+    <div class="row">
+      <div>
+        <label data-i18n="inTok">輸入 tokens（可手動覆寫）</label>
+        <input type="number" id="inTok" min="0" value="0">
+      </div>
+      <div>
+        <label data-i18n="outTok">預期輸出 tokens</label>
+        <input type="number" id="outTok" min="0" value="500">
+      </div>
+      <div>
+        <label data-i18n="calls">呼叫次數</label>
+        <input type="number" id="calls" min="1" value="1">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="seclabel" data-i18n="cmp">各模型成本比較（USD）</div>
+    <table>
+      <thead><tr>
+        <th data-i18n="model">模型</th>
+        <th data-i18n="cin">輸入 $</th>
+        <th data-i18n="cout">輸出 $</th>
+        <th data-i18n="ctot">總計 $</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="note" data-i18n="pricenote">※ 價格為每 1M tokens 的參考單價，可能變動，請以各官方公告為準。Token 數為估算值（以 GPT 系列分詞為基準），實際依模型而異。</div>
+  </div>
+
+  <ins class="adsbygoogle ad-slot" style="display:block" data-ad-client="ca-pub-5115666613619890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+
+  <div class="seclabel" data-i18n="picks">推薦好物</div>
+  <a class="aff" href="https://www.amazon.com/dp/059371671X?tag=ytstories0413-20" target="_blank" rel="nofollow sponsored noopener">
+    <div class="i">📚</div><div class="t"><b data-i18n="book_t">Co-Intelligence（AI 暢銷書）</b><span data-i18n="book_d">紐時暢銷 · 搞懂如何與 AI 協作</span></div>
+  </a>
+  <a class="aff" href="https://www.amazon.com/dp/B0C3HCD34R?tag=ytstories0413-20" target="_blank" rel="nofollow sponsored noopener">
+    <div class="i">🎧</div><div class="t"><b data-i18n="hp_t">Soundcore Q20i 降噪耳機</b><span data-i18n="hp_d">專注工作 · 聽 ambient 音樂的好夥伴</span></div>
+  </a>
+  <div class="note" data-i18n="aff_disc">含 Amazon 聯盟連結，透過連結購買我們可能獲得回饋，不影響你的價格。As an Amazon Associate we earn from qualifying purchases.</div>
+
+  <div class="footer">
+    <a href="https://slashman413.github.io/" data-i18n="home">← 回 AI工具人首頁</a><br>
+    <a href="https://slashman413.github.io/terms.html" data-i18n="terms">服務說明</a> ·
+    <a href="https://slashman413.github.io/privacy.html" data-i18n="privacy">隱私權政策</a>
+  </div>
+</div>
+
+<script type="module">
+  let encode = null;
+  try { ({ encode } = await import('https://esm.sh/gpt-tokenizer@2')); } catch(e) { encode = null; }
+  window.__encode = encode;
+  window.__recalc && window.__recalc();
+</script>
+<script>
+  // model pricing: USD per 1,000,000 tokens [input, output]
+  const MODELS = [
+    ["GPT-4o", 2.50, 10.00], ["GPT-4o mini", 0.15, 0.60], ["o1", 15, 60],
+    ["Claude Opus 4", 15, 75], ["Claude Sonnet 4", 3, 15], ["Claude Haiku", 0.80, 4],
+    ["Gemini 2.0 Flash", 0.10, 0.40], ["Gemini 1.5 Pro", 1.25, 5],
+    ["DeepSeek-V3", 0.27, 1.10], ["Llama 3.1 70B (típ.)", 0.40, 0.40],
+  ];
+  function estTokens(text){
+    if(!text) return 0;
+    if(window.__encode){ try { return window.__encode(text).length; } catch(e){} }
+    // fallback heuristic: CJK ~1 char/token, others ~4 chars/token
+    const cjk = (text.match(/[　-鿿＀-￯]/g)||[]).length;
+    const rest = text.length - cjk;
+    return Math.ceil(cjk + rest/4);
+  }
+  const $ = id => document.getElementById(id);
+  let lastTextTokens = 0;
+  function recalc(){
+    const text = $("text").value;
+    const tt = estTokens(text);
+    lastTextTokens = tt;
+    $("tokCount").textContent = tt.toLocaleString();
+    $("charCount").textContent = text.length.toLocaleString();
+    if(document.activeElement !== $("inTok")) $("inTok").value = tt;
+    const inT = parseFloat($("inTok").value)||0, outT = parseFloat($("outTok").value)||0, n = parseFloat($("calls").value)||1;
+    const rows = MODELS.map(([m,pi,po])=>{
+      const ci = inT/1e6*pi*n, co = outT/1e6*po*n;
+      return {m, ci, co, tot: ci+co};
+    }).sort((a,b)=>a.tot-b.tot);
+    const min = rows.length?rows[0].tot:0;
+    $("rows").innerHTML = rows.map((r,i)=>`<tr class="${i===0?'best':''}"><td>${r.m}${i===0?' <span class="badge">'+(LANG==='en'?'cheapest':'最省')+'</span>':''}</td><td>$${r.ci.toFixed(4)}</td><td>$${r.co.toFixed(4)}</td><td><b>$${r.tot.toFixed(4)}</b></td></tr>`).join("");
+  }
+  window.__recalc = recalc;
+  ["text","inTok","outTok","calls"].forEach(id=>$(id).addEventListener("input",recalc));
+
+  // i18n
+  const I18N = {
+    title:["Token 計數 & API 成本計算機","Token & API Cost Calculator"],
+    sub:["貼上文字即時估算 token 數，並比較各大 LLM API 的輸入/輸出費用。","Paste text to estimate tokens and compare LLM API input/output costs."],
+    inlabel:["輸入文字（估算 token 數）","Input text (estimate tokens)"],
+    tokens:["輸入 tokens","input tokens"], chars:["字元數","characters"],
+    inTok:["輸入 tokens（可手動覆寫）","input tokens (editable)"], outTok:["預期輸出 tokens","expected output tokens"], calls:["呼叫次數","number of calls"],
+    cmp:["各模型成本比較（USD）","Cost comparison by model (USD)"],
+    model:["模型","Model"], cin:["輸入 $","Input $"], cout:["輸出 $","Output $"], ctot:["總計 $","Total $"],
+    pricenote:["※ 價格為每 1M tokens 的參考單價，可能變動，請以各官方公告為準。Token 數為估算值（以 GPT 系列分詞為基準），實際依模型而異。","* Prices are reference rates per 1M tokens and may change — check official pricing. Token counts are estimates (GPT-style tokenization) and vary by model."],
+    picks:["推薦好物","RECOMMENDED"],
+    book_t:["Co-Intelligence（AI 暢銷書）","Co-Intelligence (AI bestseller)"], book_d:["紐時暢銷 · 搞懂如何與 AI 協作","NYT bestseller · how to work with AI"],
+    hp_t:["Soundcore Q20i 降噪耳機","Soundcore Q20i ANC Headphones"], hp_d:["專注工作 · 聽 ambient 音樂的好夥伴","Great for deep focus & ambient music"],
+    aff_disc:["含 Amazon 聯盟連結，透過連結購買我們可能獲得回饋，不影響你的價格。As an Amazon Associate we earn from qualifying purchases.","Contains Amazon affiliate links — we may earn a commission at no extra cost to you. As an Amazon Associate we earn from qualifying purchases."],
+    home:["← 回 AI工具人首頁","← Back to AI Toolkit home"], terms:["服務說明","Terms"], privacy:["隱私權政策","Privacy"],
+  };
+  let LANG = localStorage.getItem('site_lang') || 'zh';
+  function setLang(l){
+    LANG = l; const i = l==='en'?1:0;
+    document.querySelectorAll('[data-i18n]').forEach(el=>{ const t=I18N[el.getAttribute('data-i18n')]; if(t) el.textContent=t[i]; });
+    document.documentElement.lang = l==='en'?'en':'zh-TW';
+    $("langBtn").textContent = l==='en'?'中':'EN';
+    localStorage.setItem('site_lang', l); recalc();
+  }
+  function toggleLang(){ setLang(LANG==='en'?'zh':'en'); }
+  window.toggleLang = toggleLang;
+  setLang(LANG); recalc();
+  try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){}
+</script>
+</body>
+</html>
