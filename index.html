@@ -116,7 +116,20 @@
 <div id="vc" style="text-align:center;font-size:11px;color:#55557a;margin-top:16px;opacity:.85"></div><script>(function(){function rv(){var e=document.getElementById("vc");if(!e||!e.dataset.n)return;var en=(localStorage.getItem("site_lang")==="en");e.textContent="\u{1F441} "+Number(e.dataset.n).toLocaleString()+(en?" views":" 次瀏覽");}fetch("https://abacus.jasoncameron.dev/hit/sm413-tokencalc/views").then(function(r){return r.json()}).then(function(d){var e=document.getElementById("vc");if(e){e.dataset.n=d.value;rv();}}).catch(function(){});var lb=document.getElementById("langBtn");if(lb)lb.addEventListener("click",function(){setTimeout(rv,0);});})();</script>
     
 
-    <!-- MONETIZE START -->
+    
+  <!-- GUIDE START -->
+  <section class="guide" style="max-width:560px;margin:22px auto;text-align:left;line-height:1.7;color:#9a9ac0;font-size:13.5px">
+    <h2 style="font-size:16px;color:#e8e8f0;margin:16px 0 8px">About this token & API cost calculator</h2>
+    <p>Estimate how many tokens your text uses and what an API call will cost across providers such as OpenAI (GPT), Anthropic (Claude) and Google (Gemini). It runs in your browser, so your prompt text stays private.</p>
+    <h3 style="font-size:13.5px;color:#c7c7f0;margin:14px 0 6px">How to use</h3>
+    <ol style="padding-left:20px;margin:0"><li>Paste your prompt or sample text.</li><li>See the estimated token count.</li><li>Pick a model to see the input and output cost.</li></ol>
+    <h3 style="font-size:13.5px;color:#c7c7f0;margin:14px 0 6px">Why use it</h3>
+    <p>API pricing is per token and costs add up fast at scale. Estimating tokens and comparing model prices before you build helps you choose the most cost-effective model and budget accurately.</p>
+    <h3 style="font-size:13.5px;color:#c7c7f0;margin:14px 0 6px">FAQ</h3>
+    <details style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;margin:6px 0"><summary style="cursor:pointer;font-weight:600;font-size:13px;color:#c7c7f0">How accurate is the token count?</summary><p style="margin-top:8px;font-size:12.5px;color:#9a9ac0;line-height:1.6">It's a close estimate; exact counts vary slightly by each model's tokenizer.</p></details><details style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;margin:6px 0"><summary style="cursor:pointer;font-weight:600;font-size:13px;color:#c7c7f0">Does it cover input and output pricing?</summary><p style="margin-top:8px;font-size:12.5px;color:#9a9ac0;line-height:1.6">Yes — most models price input and output tokens differently, and the calculator reflects that.</p></details><details style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;margin:6px 0"><summary style="cursor:pointer;font-weight:600;font-size:13px;color:#c7c7f0">Is my text sent to any API?</summary><p style="margin-top:8px;font-size:12.5px;color:#9a9ac0;line-height:1.6">No — counting is done locally and nothing is uploaded.</p></details>
+  </section>
+  <!-- GUIDE END -->
+  <!-- MONETIZE START -->
   <div class="reco-widget" data-cat="ai"></div>
   <div class="more"><a href="https://ko-fi.com/ytstories0413" target="_blank" rel="noopener" onclick="try{gtag('event','kofi_click')}catch(e){}">☕ 請我喝咖啡 Ko-fi</a></div>
   <script src="https://slashman413.github.io/reco-widget.js" defer></script>
