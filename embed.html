@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM Token & API Cost Calculator (embed)</title>
+<meta name="robots" content="noindex">
+<!-- Google tag (gtag.js) — attributes embed usage as referral traffic -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MY95FHB8JG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MY95FHB8JG');
+  gtag('event', 'embed_load', { widget: 'token-cost-calculator' });
+</script>
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0a0f;color:#e8e8f0;padding:14px;line-height:1.5}
+  .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:12px}
+  label{display:block;font-size:12px;color:#9a9ac0;margin-bottom:6px;font-weight:600}
+  textarea{width:100%;min-height:84px;background:#12121a;border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#e8e8f0;padding:10px;font-size:14px;resize:vertical}
+  .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .row>div{flex:1;min-width:110px}
+  input[type=number]{width:100%;background:#12121a;border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#e8e8f0;padding:9px;font-size:14px}
+  .stat{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px}
+  .stat .b{background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.25);border-radius:10px;padding:8px 12px}
+  .stat .n{font-size:20px;font-weight:800;color:#a5b4fc}
+  .stat .l{font-size:11px;color:#8888b0}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px}
+  th,td{text-align:right;padding:8px 8px;border-bottom:1px solid rgba(255,255,255,.06)}
+  th:first-child,td:first-child{text-align:left}
+  th{color:#8888b0;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+  tr.best td{background:rgba(16,185,129,.10)}
+  .badge{display:inline-block;font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:99px;background:rgba(16,185,129,.2);color:#10b981;margin-left:6px}
+  .note{font-size:10.5px;color:#50506e;margin-top:8px;line-height:1.6}
+  .pb{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08);font-size:12px}
+  .pb a{color:#a5b4fc;text-decoration:none;font-weight:700}
+  .pb a:hover{text-decoration:underline}
+  .pb .cta{color:#10b981}
+</style>
+</head>
+<body>
+  <div class="card">
+    <label>Paste text to estimate tokens</label>
+    <textarea id="text" placeholder="Paste your prompt / text here..."></textarea>
+    <div class="stat">
+      <div class="b"><div class="n" id="tokCount">0</div><div class="l">input tokens</div></div>
+      <div class="b"><div class="n" id="charCount">0</div><div class="l">characters</div></div>
+    </div>
+    <div class="row">
+      <div><label>input tokens (editable)</label><input type="number" id="inTok" min="0" value="0"></div>
+      <div><label>output tokens</label><input type="number" id="outTok" min="0" value="500"></div>
+      <div><label>calls</label><input type="number" id="calls" min="1" value="1"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <table>
+      <thead><tr><th>Model</th><th>Input $</th><th>Output $</th><th>Total $</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="note">* Reference rates per 1M tokens; may change — check official pricing. Token counts are GPT-style estimates.</div>
+    <div class="pb">
+      <span>⚡ Powered by <a href="https://slashmantools.us/token-cost-calculator/?utm_source=embed&utm_medium=widget&utm_campaign=token-calc" target="_blank" rel="noopener">Token &amp; API Cost Calculator</a></span>
+      <a class="cta" href="https://slashman413.gumroad.com/l/saas-starter?utm_source=embed&utm_medium=widget&utm_campaign=token-calc" target="_blank" rel="noopener">🛠 Next.js SaaS Starter →</a>
+    </div>
+  </div>
+
+<script type="module">
+  let encode = null;
+  try { ({ encode } = await import('https://esm.sh/gpt-tokenizer@2')); } catch(e) { encode = null; }
+  window.__encode = encode;
+  window.__recalc && window.__recalc();
+</script>
+<script>
+  // model pricing: USD per 1,000,000 tokens [input, output] — keep in sync with index.html
+  const MODELS = [
+    ["GPT-4o", 2.50, 10.00], ["GPT-4o mini", 0.15, 0.60], ["o1", 15, 60],
+    ["Claude Opus 4", 15, 75], ["Claude Sonnet 4", 3, 15], ["Claude Haiku", 0.80, 4],
+    ["Gemini 2.0 Flash", 0.10, 0.40], ["Gemini 1.5 Pro", 1.25, 5],
+    ["DeepSeek-V3", 0.27, 1.10], ["Llama 3.1 70B", 0.40, 0.40],
+  ];
+  function estTokens(text){
+    if(!text) return 0;
+    if(window.__encode){ try { return window.__encode(text).length; } catch(e){} }
+    const cjk = (text.match(/[　-鿿＀-￯]/g)||[]).length;
+    const rest = text.length - cjk;
+    return Math.ceil(cjk + rest/4);
+  }
+  const $ = id => document.getElementById(id);
+  function recalc(){
+    const text = $("text").value;
+    const tt = estTokens(text);
+    $("tokCount").textContent = tt.toLocaleString();
+    $("charCount").textContent = text.length.toLocaleString();
+    if(document.activeElement !== $("inTok")) $("inTok").value = tt;
+    const inT = parseFloat($("inTok").value)||0, outT = parseFloat($("outTok").value)||0, n = parseFloat($("calls").value)||1;
+    const rows = MODELS.map(([m,pi,po])=>{ const ci=inT/1e6*pi*n, co=outT/1e6*po*n; return {m,ci,co,tot:ci+co}; }).sort((a,b)=>a.tot-b.tot);
+    $("rows").innerHTML = rows.map((r,i)=>`<tr class="${i===0?'best':''}"><td>${r.m}${i===0?' <span class="badge">cheapest</span>':''}</td><td>$${r.ci.toFixed(4)}</td><td>$${r.co.toFixed(4)}</td><td><b>$${r.tot.toFixed(4)}</b></td></tr>`).join("");
+  }
+  window.__recalc = recalc;
+  ["text","inTok","outTok","calls"].forEach(id=>$(id).addEventListener("input",recalc));
+  recalc();
+</script>
+</body>
+</html>

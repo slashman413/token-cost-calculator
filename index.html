@@ -101,6 +101,26 @@
     <div class="note" data-i18n="pricenote">※ 價格為每 1M tokens 的參考單價，可能變動，請以各官方公告為準。Token 數為估算值（以 GPT 系列分詞為基準），實際依模型而異。</div>
   </div>
 
+  <div class="card">
+    <div class="seclabel">📎 Embed this calculator (free)</div>
+    <p class="note" style="margin:0 0 8px">Drop this free token &amp; cost calculator into your blog, docs, or Notion. Just paste the code:</p>
+    <textarea id="embedCode" readonly style="min-height:70px;font-family:ui-monospace,Menlo,monospace;font-size:12px">&lt;iframe src="https://slashmantools.us/token-cost-calculator/embed.html" width="100%" height="560" style="border:1px solid rgba(0,0,0,.12);border-radius:12px;max-width:640px" title="LLM Token &amp; API Cost Calculator" loading="lazy"&gt;&lt;/iframe&gt;</textarea>
+    <button id="copyEmbed" class="lang-btn" style="margin-top:8px;cursor:pointer">📋 Copy embed code</button>
+  </div>
+  <script>
+    (function(){
+      var b=document.getElementById('copyEmbed'), t=document.getElementById('embedCode');
+      if(!b||!t) return;
+      b.addEventListener('click',function(){
+        t.select();
+        navigator.clipboard.writeText(t.value).then(function(){
+          b.textContent='✓ Copied!'; setTimeout(function(){b.textContent='📋 Copy embed code';},1800);
+          try{gtag('event','copy_embed_code',{widget:'token-cost-calculator'})}catch(e){}
+        }).catch(function(){ document.execCommand('copy'); });
+      });
+    })();
+  </script>
+
   <ins class="adsbygoogle ad-slot" style="display:block" data-ad-client="ca-pub-7217603696203672" data-ad-format="auto" data-full-width-responsive="true"></ins>
 
   <div class="seclabel" data-i18n="picks">推薦好物</div>
