@@ -140,6 +140,16 @@
     
 
     
+  <!-- CTA INLINE -->
+  <div class="cta-card" style="max-width:520px;margin:20px auto;background:linear-gradient(135deg,rgba(99,102,241,.12),rgba(6,182,212,.10));border:1px solid rgba(99,102,241,.25);border-radius:14px;padding:16px 14px;text-align:center">
+    <div style="font-size:14px;font-weight:700;color:#e8e8f0;margin-bottom:8px" data-i18n="cta_title">☕ 這個工具有幫到你嗎？</div>
+    <div style="font-size:12px;color:#9a9ac0;margin-bottom:12px" data-i18n="cta_sub">你的支持讓我們繼續開發更多免費工具！</div>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <a href="https://ko-fi.com/ytstories0413" target="_blank" rel="noopener" style="padding:8px 16px;border-radius:10px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;text-decoration:none;font-size:13px;font-weight:700" onclick="try{gtag('event','kofi_click')}catch(e){}">☕ Ko-fi 支持</a>
+      <a href="https://slashmantools.us/utm-builder/index.html?utm_source=tool&utm_medium=cta-card&utm_campaign=signup" target="_blank" rel="noopener" style="padding:8px 16px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#c7c7f0;text-decoration:none;font-size:13px;font-weight:700" onclick="try{gtag('event','subscribe_click')}catch(e){}">📧 訂閱電子報</a>
+    </div>
+  </div>
+
   <!-- GUIDE START -->
   <section class="guide" style="max-width:560px;margin:22px auto;text-align:left;line-height:1.7;color:#9a9ac0;font-size:13.5px">
     <h2 style="font-size:16px;color:#e8e8f0;margin:16px 0 8px">About this token & API cost calculator</h2>
@@ -221,6 +231,32 @@
   try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){}
 </script>
   <script src="https://slashmantools.us/kofi-widget.js" defer></script>
+  <!-- EMAIL SUBSCRIBE -->
+  <div class="sub-inline" style="max-width:520px;margin:20px auto;padding:14px;text-align:center;border-top:1px solid rgba(255,255,255,.08)">
+    <div style="font-size:13px;color:#c7c7f0;margin-bottom:8px">📧 訂閱獲取 <b>AI 工具推薦 & 台股分析</b>（不寄垃圾信）</div>
+    <form id="subForm" style="display:flex;gap:6px;max-width:340px;margin:0 auto">
+      <input id="subEmail" type="email" required placeholder="your@email.com" style="flex:1;background:#12121a;border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#e8e8f0;padding:8px 10px;font-size:12px">
+      <button type="submit" style="padding:8px 14px;border:none;border-radius:8px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-weight:700;font-size:12px;cursor:pointer">📫 訂閱</button>
+    </form>
+    <div id="subMsg" style="font-size:11px;margin-top:6px;color:#9a9ac0"></div>
+  </div>
+  <script>
+    (function(){
+      var f=document.getElementById('subForm'); if(!f)return;
+      var W3KEY="32e709fa-d67d-46e9-a1a0-1ac9ef6be251";
+      f.addEventListener('submit',async function(e){
+        e.preventDefault(); var em=document.getElementById('subEmail'),msg=document.getElementById('subMsg');
+        if(!em||!msg)return; msg.style.color='#9a9ac0'; msg.textContent='...';
+        try{
+          var r=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({access_key:W3KEY,email:em.value,subject:'[tool] Newsletter subscriber',from_name:'AI Toolkit'})});
+          var d=await r.json();
+          if(d.success){msg.style.color='#10b981';msg.textContent='🎉 訂閱成功！';f.reset();if(typeof gtag==='function')gtag('event','newsletter_subscribe');}
+          else{msg.style.color='#f87171';msg.textContent='失敗，請再試';}
+        }catch(err){msg.style.color='#f87171';msg.textContent='發生錯誤';}
+      });
+    })();
+  </script>
+  <!-- END EMAIL SUBSCRIBE -->
 <!-- cfo-cta -->
 <div style="max-width:640px;margin:40px auto 24px;padding:16px 8px;border-top:1px solid rgba(120,130,150,.25);text-align:center;font-family:system-ui,-apple-system,sans-serif;font-size:14px;">
   <div style="opacity:.6;margin-bottom:8px;">More from slashman413</div>
