@@ -8,7 +8,10 @@
 <meta name="description" content="免費線上 Token 計數與 LLM API 成本計算機：貼上文字即時估算 token 數，比較 GPT-4o、Claude、Gemini、DeepSeek 等模型的輸入/輸出費用。Free token counter & LLM API cost calculator.">
 <meta property="og:title" content="Token & API Cost Calculator | Token 成本計算機">
 <meta property="og:description" content="貼上文字即時算 token、比較各大 LLM API 費用。GPT · Claude · Gemini · DeepSeek.">
-<meta property="og:image" content="https://slashmantools.us/token-cost-calculator/og.png"><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://slashmantools.us/token-cost-calculator/og.png">
+<meta property="og:image" content="https://slashmantools.us/token-cost-calculator/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="SlashMan Tools"><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://slashmantools.us/token-cost-calculator/og.png">
 <!-- GSC: replace content with the verification code from Search Console, then it verifies -->
 <meta name="google-site-verification" content="jV8Xt5l-peRpLknp7xKYpvN8N5tCAkMctq0D-3RVyzk">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7217603696203672" crossorigin="anonymous"></script>
@@ -52,6 +55,12 @@
   .footer{margin-top:22px;text-align:center;font-size:11px;color:#444466;line-height:1.8}
   .footer a{color:#6868a0;text-decoration:none}.footer a:hover{text-decoration:underline}
   .seclabel{font-size:11px;font-weight:700;letter-spacing:1px;color:#44446a;text-transform:uppercase;margin:18px 0 8px}
+
+  .share-bar{display:flex;align-items:center;gap:6px;margin:10px 0 16px;flex-wrap:wrap}
+  .share-bar .lbl{font-size:11px;color:#55557a;font-weight:600;margin-right:4px;letter-spacing:.5px}
+  .share-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 11px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#9a9ac0;text-decoration:none;font-size:12px;font-weight:600;cursor:pointer;transition:.15s}
+  .share-btn:hover{background:rgba(99,102,241,.15);border-color:rgba(99,102,241,.35);color:#c7c7f0}
+  .share-btn.copied{background:rgba(16,185,129,.15);border-color:rgba(16,185,129,.35);color:#10b981}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"本工具用 GPT 系列分詞器估算 token 數，不同模型實際分詞略有差異，數字僅供參考。Tokens are estimated using a GPT-style tokenizer; actual counts vary slightly by model.","@type":"Answer"},"name":"Token 是怎麼計算的？ / How are tokens counted?","@type":"Question"},{"acceptedAnswer":{"text":"完全免費，全部在你瀏覽器本機運算，不會上傳任何文字。Completely free and runs locally in your browser; your text is never uploaded.","@type":"Answer"},"name":"這個工具免費嗎？ / Is it free?","@type":"Question"},{"acceptedAnswer":{"text":"價格為各模型每百萬 token 的參考單價，可能變動，請以官方公告為準。Prices are reference rates per 1M tokens and may change; always check official pricing.","@type":"Answer"},"name":"顯示的 API 價格準確嗎？ / Are the API prices accurate?","@type":"Question"}],"@type":"FAQPage"}</script>
 <link rel="canonical" href="https://slashmantools.us/token-cost-calculator/">
@@ -67,6 +76,16 @@
   </div>
   <div class="sub" data-i18n="sub">貼上文字即時估算 token 數，並比較各大 LLM API 的輸入/輸出費用。</div>
 
+  <div class="share-bar">
+    <span class="lbl">📤 分享</span>
+    <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fslashmantools.us%2Ftoken-cost-calculator%2F" target="_blank" rel="noopener" onclick="try{gtag('event','share_facebook')}catch(e){}">📘 FB</a>
+    <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fslashmantools.us%2Ftoken-cost-calculator%2F" target="_blank" rel="noopener" onclick="try{gtag('event','share_twitter')}catch(e){}">🐦 X</a>
+    <a class="share-btn" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fslashmantools.us%2Ftoken-cost-calculator%2F" target="_blank" rel="noopener" onclick="try{gtag('event','share_line')}catch(e){}">💬 Line</a>
+    <button class="share-btn" onclick="shareLink(this,'https://slashmantools.us/token-cost-calculator/')">🔗 複製連結</button>
+  </div>
+  <script>
+    function shareLink(el,url){navigator.clipboard.writeText(url).then(function(){el.textContent='✓ 已複製';el.classList.add('copied');setTimeout(function(){el.textContent='🔗 複製連結';el.classList.remove('copied');},2000);try{gtag('event','share_copylink')}catch(e){}}).catch(function(){})}
+  </script>
   <div class="card">
     <label data-i18n="inlabel">輸入文字（估算 token 數）</label>
     <textarea id="text" placeholder="Paste your prompt / text here..."></textarea>
@@ -171,6 +190,27 @@
     <a href="https://slashmantools.us/terms.html" data-i18n="terms">服務說明</a> ·
     <a href="https://slashmantools.us/privacy.html" data-i18n="privacy">隱私權政策</a>
   </div>
+
+  <!-- CROSS-LINK START -->
+  <div class="cross-links" style="max-width:760px;margin:24px auto 0;text-align:center">
+    <div style="font-size:13px;font-weight:700;color:#c7c7f0;margin-bottom:4px">🔗 你可能也會喜歡</div>
+    <div style="font-size:11px;color:#7878a0;margin-bottom:12px">More Tools</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;text-align:left">
+      <a href="https://slashmantools.us/ai-image-size-calculator/" style="display:block;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);text-decoration:none;color:inherit;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(99,102,241,.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'">
+        <div style="font-size:13px;font-weight:700;color:#c7c7f0">AI 出圖尺寸計算 | Image Size</div>
+        <div style="font-size:11px;color:#7878a0;margin-top:3px">SD/Midjourney 適用，對齊 64 倍數</div>
+      </a>
+      <a href="https://slashmantools.us/dev-tools/" style="display:block;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);text-decoration:none;color:inherit;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(99,102,241,.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'">
+        <div style="font-size:13px;font-weight:700;color:#c7c7f0">開發者工具 | Dev Tools</div>
+        <div style="font-size:11px;color:#7878a0;margin-top:3px">Base64/URL/JWT/UUID/Hash，本機運算</div>
+      </a>
+      <a href="https://slashmantools.us/json-regex-devtools/" style="display:block;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);text-decoration:none;color:inherit;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(99,102,241,.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'">
+        <div style="font-size:13px;font-weight:700;color:#c7c7f0">JSON·Regex 工具 | JSON & Regex</div>
+        <div style="font-size:11px;color:#7878a0;margin-top:3px">JSON 格式化驗證 + 正則測試</div>
+      </a>
+    </div>
+  </div>
+  <!-- CROSS-LINK END -->
 </div>
 
 <script type="module">
